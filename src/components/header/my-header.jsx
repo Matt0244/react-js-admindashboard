@@ -7,6 +7,8 @@ import weatherLogo from "../../assets/images/weather.png";
 import { items } from "../left-nav/my-leftNav.jsx";
 import storageUtils from "../../utils/storageUtils.js";
 import memoryUtils from "../../utils/memoryUtils.js";
+import {connect} from 'react-redux'
+import {receiveUser, setHeadTitle} from'../../redux/actions.js'
 
 const ReachableContext = createContext(null);
 const config = {
@@ -14,31 +16,36 @@ const config = {
   content: (
     <>
       <ReachableContext.Consumer>
-        {(name) => `如果退出登录,点击确认: ${name}!`}
+        {() => `如果退出登录,点击确认!`}
       </ReachableContext.Consumer>
     </>
   ),
   onOk() {
     storageUtils.removeUser();
-    memoryUtils.user = {};
+    // memoryUtils.user = {};
+    receiveUser({});
+    
     window.location.href = "/login";
   },
 };
-const username=memoryUtils.user.username;
-console.log(username)
 
-export default function MyHeader() {
+
+function MyHeader(props) {
   // state = {
   //   now: new Date().toLocaleString(),
   //   dayPictureUrl: "",
   //   weather: "",
   // };
+
+  const{ headTitle,setHeadTitle,user} = props
   const [now, setNow] = useState(new Date().toLocaleString());
   const [temp, setTemp] = useState("temp");
   const [description, setDescription] = useState("weater");
   const [title, setTitle] = useState("首页");
   const location = useLocation();
   const [modal, contextHolder] = Modal.useModal();
+
+  const username= user.username;
 
   const path = location.pathname;
 
@@ -79,6 +86,7 @@ export default function MyHeader() {
       });
     };
     findTitle();
+    setHeadTitle(title)
 
     return () => {
       clearInterval(intervalId);
@@ -125,3 +133,8 @@ export default function MyHeader() {
     </div>
   );
 }
+
+export default connect(
+  (state => ({headTitle:state.headTitle,user:state.user})),
+  {setHeadTitle}
+)(MyHeader);

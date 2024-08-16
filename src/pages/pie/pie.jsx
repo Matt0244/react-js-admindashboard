@@ -4,7 +4,7 @@ function Pie() {
   return (
     <div>Pie</div>
 
-    test('should first', () => { second })
+    
   )
 }
 

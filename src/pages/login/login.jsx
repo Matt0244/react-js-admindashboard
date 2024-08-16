@@ -9,37 +9,43 @@ import {
   notification,
 } from "antd";
 import "./login.less";
-
 //import {reqLogin}from '../../api'
 import { useHistory } from "react-router-dom";
-import memoryUtils from "../../utils/memoryUtils";
+// import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
 import logo from "../../assets/images/logo.png";
+import { connect } from "react-redux";
+import { receiveUser } from "../../redux/actions";
 
-export default function Login() {
+function Login(props) {
   const history = useHistory();
   // if user is login, redirect to admin
-  const user = memoryUtils.user;
+  const user = props.user;
+  // console.log(user._id);
+  // console.log("我是id"+user._id)
+  // const user = memoryUtils.user;
   if (user && user._id) {
+    // if (user) {
     history.replace("/");
   }
 
   const onFinish = async (values) => {
     try {
-      axios.post("/login", values).then((response) => {
-        if (response.data.status === 0) {
-          message.success("登录成功");
-          const user = response.data.data;
-          memoryUtils.user = user; //保存在内存中
-          storageUtils.saveUser(user); //保存在local中
-          history.replace("/");
-          //console.log(response.status);
-        } else {
-          message.error(response.data.msg); // 状态码为1 时，提示错误信息
-        }
-      });
+      const response = await axios.post("/login", values);
+      if (response.data.status === 0) {
+        message.success("登录成功");
+        const user = response.data.data;
+        props.receiveUser(user);
+        storageUtils.saveUser(user);
+        history.replace("/");
+      } else {
+        message.error(response.data.msg);
+      }
     } catch (error) {
-      notification.error("发送失败");
+      notification.error({
+        message: "Error",
+        description: "发送失败",
+      });
     }
   };
 
@@ -55,7 +61,7 @@ export default function Login() {
         <h1>React后台项目:后台管理系统</h1>
       </header>
 
-      <section className="login-conteant">
+      <section className="login-content">
         <h2>用户登录</h2>
         <Form
           name="basic"
@@ -137,3 +143,7 @@ export default function Login() {
     </div>
   );
 }
+
+export default connect((state) => ({ user: state.user }), { receiveUser })(
+  Login
+);

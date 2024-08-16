@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 
 //引入蚂蚁金服的布局组件
-import { Fomr, Input, Button, Table, Modal, message, Tree } from "antd";
+import {  Input, Button, Table, Modal, message, Tree } from "antd";
 //引入api 接口查询数据
 import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 
@@ -10,12 +10,17 @@ import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import menuList from "../../menuConfig";
 
 // 引入登录名称
-import memoryUtils from "../../utils/memoryUtils";
+// import memoryUtils from "../../utils/memoryUtils";
 
 //引入时间格式转换
 import timestampToYMD from "../../utils/timestampToYMD";
+import {connect} from 'react-redux'
+import {receiveUser} from '../../redux/actions';
+import storageUtils from '../../utils/storageUtils';
 
-function Role() {
+function Role(props) {
+
+  const {user, receiveUser} = props
 
   //获取history
   const history = useHistory();
@@ -120,7 +125,7 @@ function Role() {
 
   //获取当前用户
 
-  const username = memoryUtils.user.username;
+  const username = user.username;
 
   return (
     <div>
@@ -180,9 +185,11 @@ function Role() {
               console.log("role", role);
               
               //清空localStorage 防止更新权限后菜单没有更新.
-              memoryUtils.user = {};
-               //退出页面 replace admin页面
-               history.replace("/admin");
+               storageUtils.removeUser()
+
+              receiveUser({});
+               //退出页面 replace login
+               history.replace("/login");
              
 
             },
@@ -208,8 +215,7 @@ function Role() {
           //监听选中项的变化
           onChange: (selectedRowKeys, selectedRows) => {
             setSelectedRowKeys(selectedRows[0]._id);
-            console.log(selectedRows[0]._id);
-            // console.log(selectedRowKeys)
+             setRole(selectedRows[0])
           },
         }}
         bordered
@@ -255,4 +261,10 @@ function Role() {
   );
 }
 
-export default Role;
+export default connect(
+  (
+    state => ({user:state.user})
+  ),{
+    receiveUser
+  }
+)(Role)
