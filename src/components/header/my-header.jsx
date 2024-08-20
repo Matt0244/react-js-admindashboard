@@ -1,7 +1,9 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useLocation } from "react-router-dom";
 import {  Modal,Button } from "antd";
-import "./index.less";
+// import "./index.less";
+import "./indes.css";
+
 import { reqWeather } from "../../api/index";
 import weatherLogo from "../../assets/images/weather.png";
 import { items } from "../left-nav/my-leftNav.jsx";

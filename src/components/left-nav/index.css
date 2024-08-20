@@ -1,0 +1,31 @@
+.left-nav {
+    background-color: #000c17;
+    text-align: center;
+    justify-content: center;
+}
+
+.left-nav .left-nav-header {
+    display: flex;
+    height: 80px;
+    align-items: center; /* 垂直居中 */
+    justify-content: center;
+}
+
+.left-nav .left-nav-header img {
+    width: 40px;
+    height: 40px;
+    margin: 0 15px;
+}
+
+.left-nav .left-nav-header h1 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.left-nav .left-nav-menu {
+    text-align: left;
+}
+
+.left-nav .left-nav-menu span {
+    padding-left: 10px;
+}
