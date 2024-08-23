@@ -8,7 +8,9 @@ import {
   SignalFilled,
 } from "@ant-design/icons";
 import { Menu } from "antd";
-import "./index.less";
+// import "./index.less";
+import './index.css';
+
 import logo from "../../assets/images/logo.png";
 
 // 定义一个函数，用于创建菜单项

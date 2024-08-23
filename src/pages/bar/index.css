@@ -1,0 +1,6 @@
+.bk-white {
+    background-color: white; /* 设置背景颜色为白色 */
+    color: black; /* 设置文本颜色为黑色，以确保在白色背景上可读 */
+    padding: 16px; /* 可选：为内容添加内边距 */
+    border-radius: 4px; /* 可选：为元素添加圆角边框 */
+  }
