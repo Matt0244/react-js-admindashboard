@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Space, Button, Table, message, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import "./index.less";
+import "./index.css";
 import { reqCategorys,  reqUpdateCategory ,reqAddCategory} from "../../api";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 

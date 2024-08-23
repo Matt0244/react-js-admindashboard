@@ -8,7 +8,7 @@ import { reqWeather } from "../../api/index";
 import weatherLogo from "../../assets/images/weather.png";
 import { items } from "../left-nav/my-leftNav.jsx";
 import storageUtils from "../../utils/storageUtils.js";
-import memoryUtils from "../../utils/memoryUtils.js";
+// import memoryUtils from "../../utils/memoryUtils.js";
 import {connect} from 'react-redux'
 import {receiveUser, setHeadTitle} from'../../redux/actions.js'
 
@@ -66,6 +66,7 @@ function MyHeader(props) {
 
     const getWeather = setInterval(() => {
       reqWeather().then((data) => {
+        console.log(data)
         setTemp((data.temp - 273.15).toFixed(2));
         setDescription(data.description);
       });
