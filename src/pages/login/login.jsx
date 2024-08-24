@@ -8,7 +8,7 @@ import {
   message,
   notification,
 } from "antd";
-import "./login.less";
+import './login.css'; // 确保路径正确
 //import {reqLogin}from '../../api'
 import { useHistory } from "react-router-dom";
 // import memoryUtils from "../../utils/memoryUtils";
