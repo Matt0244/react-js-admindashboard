@@ -45,12 +45,12 @@ export default function Admin() {
     textAlign: "center",
     lineHeight: "120px",
     color: "#fff",
-    // backgroundColor: '#3ba0e9',
+    backgroundColor: '#3ba0e9',
   };
   const footerStyle = {
-    // textAlign: "center",
-    // color: "#fff",
-    // backgroundColor: "#7dbcea",
+    textAlign: "center",
+    color: "#fff",
+    backgroundColor: "#7dbcea",
   };
 
   return (
@@ -69,7 +69,8 @@ export default function Admin() {
           <Header style={headerStyle}>
             <MyHeader />
           </Header>
-          <Content style={contentStyle} >
+          {/* <Content style={contentStyle} > */}
+          <Content  >
             <Switch>
               <Route path="/home" component={Home} />
               <Route path="/category" component={Category} />

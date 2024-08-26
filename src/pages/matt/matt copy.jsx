@@ -1,5 +1,3 @@
-'use client'
-
 import { useState } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import {
@@ -125,7 +123,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Home() {
+export default function Matt() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
