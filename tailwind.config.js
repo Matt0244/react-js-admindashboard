@@ -12,11 +12,14 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}', // 根据你的项目结构调整路径
   ],
   theme: {
+    // 在原定breakpoints 上在添加2个
     screen:{
       tablet:'960px',
       desktop:'1248px',
     },
-    extend: {},
+    extend: {
+      backgroundColor: ["active"],
+    },
   },
   plugins: [],
 }

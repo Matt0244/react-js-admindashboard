@@ -33,7 +33,7 @@ export default function Matt() {
             <h1 className=" mt-6 text-2xl font-bold text-gray-900 sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
               You can work from anywhere.
               <br />
-              <span className="text-indigo-500">Take advatage of it.</span>
+              <span className="text-indigo-500 ">Take advatage of it.</span>
             </h1>
             <p className="mt-2 text-gray-600 sm:mt-4 sm:text-xl">
               Workcation helps you find work-friendly rentals in beautiful
@@ -42,7 +42,7 @@ export default function Matt() {
             </p>
             <div className="mt-4 sm:mt-6">
               <a
-                className="inline-block px-5 py-3 rounded-lg bg-indigo-500 text-white  uppercase tracking-wider font-semibol text-sm sm:text-base"
+                class="inline-block px-5 py-3 rounded-lg transform transition bg-indigo-500 hover:bg-indigo-400 hover:-translate-y-0.5 focus:ring-indigo-500 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-offset-2 active:bg-indigo-600 uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base sm:hover:bg-green-100 sm:hover:text-3xl"
                 href="#"
               >
                 Book you space
