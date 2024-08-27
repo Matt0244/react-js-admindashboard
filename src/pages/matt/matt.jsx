@@ -59,11 +59,12 @@ export default function Matt() {
           explore.
         </p>
         <div className="mt-6 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-          {popularDestination.map((destination) => (
-            <DestinationCard key={destination.city} destination={destination} />
+          {popularDestination.map((b) => (
+            <DestinationCard key={b.city} place={b} />
           ))}
 
-          {popularDestination.map((d)=>( <DestinationCard key={d.city} destination={d} />))}
+          {popularDestination.map((a)=>( <DestinationCard key={a.city} place={a} />))}
+          
 
         </div>
         
