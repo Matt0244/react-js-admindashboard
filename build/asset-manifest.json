@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.557e0fca.css",
+    "main.js": "/static/js/main.0979cf96.js",
+    "static/media/beach-work.jpg": "/static/media/beach-work.54a50544724f0196fb52.jpg",
+    "static/media/bg.jpg": "/static/media/bg.becaf716a04e2e6de3de.jpg",
+    "static/media/logo.png": "/static/media/logo.f64871430b01d8d17c77.png",
+    "static/media/logo-brand.svg": "/static/media/logo-brand.fcfb8269094a893ebeb8376923b948b0.svg",
+    "index.html": "/index.html",
+    "static/media/index.less": "/static/media/index.31d6cfe0d16ae931b73c.less",
+    "main.557e0fca.css.map": "/static/css/main.557e0fca.css.map",
+    "main.0979cf96.js.map": "/static/js/main.0979cf96.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.557e0fca.css",
+    "static/js/main.0979cf96.js"
+  ]
+}
