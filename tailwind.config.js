@@ -18,7 +18,16 @@ module.exports = {
       desktop:'1248px',
     },
     extend: {
-      backgroundColor: ["active"],
+      colors: {
+        brand: {
+          light: "#3fbaeb",
+          DEFAULT: "#0fa9e6", //直接用brand就可以引用
+          dark: "#0c87b8",
+        },
+      },
+      fontFamily: {
+        headline: "Poppins, sans-serif", // 预设首选字体和后备字体
+      },
     },
   },
   plugins: [],

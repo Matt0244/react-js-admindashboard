@@ -1,9 +1,9 @@
 import React from "react";
-import logoWorkcation from "../../assets/images/logoWorkcation.svg";
+import logoWorkcation from "../../assets/images/logo-brand.svg";
 import beachWork from "../../assets/images/beach-work.jpg";
 import popularDestination from "../../data/popularDestinations.js";
 import DestinationCard from "../../components/DestinationCard.jsx";
-import toronto from '../../assets/images/toronto.jpg'
+
 
 export default function Matt() {
   return (
@@ -18,10 +18,10 @@ export default function Matt() {
               src={beachWork}
               alt="beachWork"
             />
-            <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
+            <h1 className="mt-6 text-2xl font-headline tracking-tight  font-semibold text-gray-900 sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
               You can work from anywhere.
               <br />
-              <span className="text-indigo-500">Take advantage of it.</span>
+              <span className="text-brand">Take advantage of it.</span>
             </h1>
             <p className="mt-2 text-gray-600 sm:mt-4 sm:text-xl">
               Workcation helps you find work-friendly rentals in beautiful
@@ -59,15 +59,15 @@ export default function Matt() {
           explore.
         </p>
         <div className="mt-6 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          {/* 如果箭头函数右侧只有一条 2边可以去括号 */}
           {popularDestination.map((b) => (
             <DestinationCard key={b.city} place={b} />
           ))}
-
-          {popularDestination.map((a)=>( <DestinationCard key={a.city} place={a} />))}
-          
-
+{/* 
+          {popularDestination.map((a) => (
+            <DestinationCard key={a.city} place={a} />
+          ))} */}
         </div>
-        
       </div>
     </div>
   );
