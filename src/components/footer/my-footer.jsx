@@ -3,6 +3,6 @@ import './index.less'
 
 export default function MyFooter() {
   return (
-    <div style={{color:'#ccc'}}>体验使用最好的后台管理</div>
+    <div style={{color:'#000000'}}>&copy; 2024 Matthew Liang. All rights reserved.</div>
   )
 }

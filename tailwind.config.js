@@ -8,9 +8,9 @@
 // }
 
 module.exports = {
-  purge: {
-    content: ["./src/**/*.jsx", "./index.html"],//  css 优化 保留值需要的文件被定义的目录
-  },
+  // purge: {
+  //   content: ["./src/**/*.jsx", "./index.html"],//  css 优化 保留值需要的文件被定义的目录
+  // },
   content: [
     './src/**/*.{js,jsx,ts,tsx}', // 根据你的项目结构调整路径
   ],

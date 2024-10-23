@@ -34,24 +34,24 @@ function Bar() {
 
   const option = {
     title: {
-      text: "ECharts 入门示例",
+      text: "ECharts Introductory Example",
     },
     tooltip: {},
     legend: {
-      data: ["销量"],
+      data: ["Sales"],
     },
     xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+      data: ["Shirt", "Woolen Sweater", "Chiffon Shirt", "Pants", "High Heels", "Socks"],
     },
     yAxis: {},
     series: [
       {
-        name: "销量",
+        name: "Sales",
         type: "bar",
         data: sales,
       },
       {
-        name: "存货",
+        name: "Stock",
         type: "bar",
         data: stock,
       },
@@ -65,9 +65,6 @@ function Bar() {
     console.log(darkMode)
   };
 
-
-
-
   return (
     <div className="bk-white">
       <Space direction="vertical">
@@ -75,14 +72,13 @@ function Bar() {
           checkedChildren="Day"
           unCheckedChildren="Night"
           defaultChecked
-          onChange= {onChange}
+          onChange={onChange}
         />
-        
       </Space>
       <ReactECharts
         theme={darkMode}
         option={option}
-        style={{ height: "400px" }} // 添加单位 'px'
+        style={{ height: "400px" }} // Add unit 'px'
         opts={{ renderer: "svg" }}
       />
 

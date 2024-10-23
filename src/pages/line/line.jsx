@@ -116,11 +116,11 @@ function Line() {
         option={option1}
         style={{ height: 400, width: "100%" }}
       />
-      <div>- Programming Language Rankings (11-20) -</div>
+      {/* <div>- Programming Language Rankings (11-20) -</div>
       <ReactECharts
         option={option2}
         style={{ height: 400, width: "100%" }}
-      />
+      /> */}
     </div>
   );
 }

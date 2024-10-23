@@ -28,21 +28,21 @@ function getItem(label, key, icon, items, path, subMenu) {
 // 定义菜单项
 export const items = [
   // 首页
-  getItem("首页", "/home", <HomeFilled />, null, "/home"),
+  getItem("Home", "/home", <HomeFilled />, null, "/home"),
   // 商品
-  getItem("商品", "/sub1", <AppstoreOutlined />, [
-    getItem("品类管理", "/category", null, null, "/category", "/sub1"),
-    getItem("商品分类", "/product", null, null, "/product", "/sub1"),
+  getItem("Products", "/sub1", <AppstoreOutlined />, [
+    getItem("Categories", "/category", null, null, "/category", "/sub1"),
+    getItem("Product", "/product", null, null, "/product", "/sub1"),
   ]),
   // 用户管理
-  getItem("用户管理", "/user", <ToolFilled />, null, "/user"),
+  getItem("Users", "/user", <ToolFilled />, null, "/user"),
   // 角色管理
-  getItem("角色管理", "/role", <SettingOutlined />, null, "/role"),
+  getItem("Role", "/role", <SettingOutlined />, null, "/role"),
   // 图形图表
-  getItem("图形图表", "/sub2", <SignalFilled />, [
-    getItem("柱形图", "/bar", null, null, "/charts/bar", "/sub2"),
-    getItem("折线图", "/line", null, null, "/charts/line", "/sub2"),
-    getItem("饼图", "/pie", null, null, "/charts/pie", "/sub2"),
+  getItem("Charts", "/sub2", <SignalFilled />, [
+    getItem("Sales", "/bar", null, null, "/charts/bar", "/sub2"),
+    getItem("Ranking", "/line", null, null, "/charts/line", "/sub2"),
+    getItem("Air Pollution", "/pie", null, null, "/charts/pie", "/sub2"),
   ]),
 ];
 
@@ -123,8 +123,8 @@ console.log(filteredItems);
   return (
     <div className="left-nav">
       <Link to="/" className="left-nav-header">
-        <img src={logo} alt="logo" />
-        <h1>硅谷后台</h1>
+        <img src={logo} alt="logo" className="rounded-lg " />
+        <h3>Admin Dashboard</h3>
       </Link>
 
       <Menu

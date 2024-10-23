@@ -5,119 +5,119 @@ import timestampToYMD from "../../utils/timestampToYMD";
 import UserForm from "./userForm";
 
 function User() {
-  const [users, setUsers] = useState([]); // 用户数据状态
-  const [isModalOpen, setIsModalOpen] = useState(false); // 控制模态框显示状态
-  const [_id, set_id] = useState(null); // 存储正在编辑的用户ID
-  const [roles, setRoles] = useState([]); // 角色数据状态
-  const [form] = Form.useForm(); // 表单实例
+  const [users, setUsers] = useState([]); // User data state
+  const [isModalOpen, setIsModalOpen] = useState(false); // Controls the modal's visibility state
+  const [_id, set_id] = useState(null); // Stores the currently edited user's ID
+  const [roles, setRoles] = useState([]); // Role data state
+  const [form] = Form.useForm(); // Form instance
 
-  // 获取用户数据
+  // Fetch user data
   const getUsers = async () => {
     const result = await reqUsers();
     if (result.status === 0) {
       console.log(result.data);
       const usersWithFormattedTime = result.data.users.map((item) => ({
         ...item,
-        create_time: timestampToYMD(item.create_time), // 格式化创建时间
+        create_time: timestampToYMD(item.create_time), // Format the creation time
       }));
 
-      setUsers(usersWithFormattedTime); // 更新用户数据状态
+      setUsers(usersWithFormattedTime); // Update user data state
     }
   };
 
-  // 获取角色数据
+  // Fetch role data
   const getRoles = async () => {
     const result = await reqRoles();
     if (result.status === 0) {
-      setRoles(result.data); // 更新角色数据状态
+      setRoles(result.data); // Update role data state
       console.log(result.data);
     } else {
       console.log("fail");
     }
   };
 
-  // 用_id找到对应的role._id，再找到对应的role.name
+  // Find the corresponding role._id by _id, then find the corresponding role.name
   const getRoleName = (roleId) => {
     const role = roles.find((role) => roleId === role._id);
     return role ? role.name : "";
   };
 
-  // 如果users或roles发生变化，就重新获取数据
+  // If users or roles change, refetch the data
   useEffect(() => {
     getRoles();
-    getUsers()
+    getUsers();
   }, []);
 
-  // 删除用户按钮点击事件
+  // Delete user button click event
   const deleteBTN = (_id) => {
     Modal.confirm({
-      title: `你要删除这个用户吗?`,
+      title: `Do you want to delete this user?`,
       onOk: async () => {
         const result = await reqDeleteUser(_id);
         if (result.status === 0) {
-          message.success("用户删除成功");
-          getUsers(); // 重新获取用户数据
+          message.success("User deleted successfully");
+          getUsers(); // Refetch user data
         } else {
-          message.error("用户删除失败");
+          message.error("Failed to delete user");
         }
       },
     });
   };
 
-  // 编辑用户按钮点击事件
+  // Edit user button click event
   const editBTN = (_id) => {
     set_id(_id);
-    setIsModalOpen(true); // 打开模态框
+    setIsModalOpen(true); // Open modal
     console.log("Edit user with ID:", _id);
   };
 
-  // 添加用户按钮点击事件
+  // Add user button click event
   const addUser = () => {
-    set_id(null); // 清空 _id
-    setIsModalOpen(true); // 打开模态框
+    set_id(null); // Clear _id
+    setIsModalOpen(true); // Open modal
   };
 
-  // 模态框确认按钮点击事件
+  // Modal OK button click event
   const handleOk = () => {
-    setIsModalOpen(false); // 关闭模态框
+    setIsModalOpen(false); // Close modal
   };
 
-  // 模态框取消按钮点击事件
+  // Modal cancel button click event
   const handleCancel = () => {
-    setIsModalOpen(false); // 关闭模态框
+    setIsModalOpen(false); // Close modal
   };
 
-  // 表格列定义
+  // Table column definitions
   const columns = [
     {
-      title: "用户名",
+      title: "Username",
       dataIndex: "username",
       key: "username",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "邮箱",
+      title: "Email",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "注册时间",
+      title: "Registration Time",
       dataIndex: "create_time",
       key: "create_time",
     },
     {
-      title: "所属角色",
+      title: "Role",
       dataIndex: "role_id",
       key: "role_id",
-      render: (roleId) => getRoleName(roleId), // 显示对应的角色名称
+      render: (roleId) => getRoleName(roleId), // Display the corresponding role name
     },
     {
-      title: "操作",
+      title: "Actions",
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <a onClick={() => editBTN(record._id)}>修改</a>
-          <a onClick={() => deleteBTN(record._id)}>删除</a>
+          <a onClick={() => editBTN(record._id)}>Edit</a>
+          <a onClick={() => deleteBTN(record._id)}>Delete</a>
         </Space>
       ),
     },
@@ -125,18 +125,18 @@ function User() {
 
   return (
     <div>
-      {/* 创建用户按钮靠左 */}
+      {/* Create user button aligned to the left */}
       <Button
         type="primary"
         style={{ float: "left", margin: "10px 20px 10px 20px" }}
         onClick={addUser}
       >
-        创建用户
+        Create User
       </Button>
       <Table columns={columns} dataSource={users} rowKey="_id" />
       <Modal
-        // 如果_id存在，title是修改用户，否则是添加用户
-        title={_id ? `修改用户:${_id}` : "添加用户"}
+        // If _id exists, the title is "Edit User", otherwise it's "Add User"
+        title={_id ? `Edit User: ${_id}` : "Add User"}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -144,7 +144,7 @@ function User() {
       >
         <UserForm
           form={form}
-          colesModal={handleCancel}
+          closeModal={handleCancel}
           _id={_id}
           roles={roles}
           getUsers={getUsers}

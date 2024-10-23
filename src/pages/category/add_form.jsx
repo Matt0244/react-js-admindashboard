@@ -23,7 +23,7 @@ export default function Add_form() {
             <Option value="3">3</Option>
         
             </Select>
-            <input placeholder='请输入分类' type="text" />
+            <input placeholder='input name' type="text" />
             </Item>
     </Form> 
   )

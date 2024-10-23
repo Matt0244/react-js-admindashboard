@@ -17,13 +17,12 @@ export default function UserForm(props) {
       console.log(values);
 
       console.log("success");
-    
-      props.colesModal(); // 关闭 modal
+
+      props.colesModal(); // Close modal
       getUsers();
     } else {
       console.log("fail");
       getUsers();
-
     }
 
     form.resetFields();
@@ -45,8 +44,8 @@ export default function UserForm(props) {
   return (
     <Form
       form={form}
-      // 
-      initialValues={{ _id }} 
+      // Set initial values with _id
+      initialValues={{ _id }}
       name="basic"
       labelCol={{
         span: 8,
@@ -57,13 +56,12 @@ export default function UserForm(props) {
       style={{
         maxWidth: 600,
       }}
-    
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item
-        label="用户名"
+        label="Username"
         name="username"
         rules={[
           {
@@ -75,17 +73,13 @@ export default function UserForm(props) {
         <Input />
       </Form.Item>
       {_id && (
-        <Form.Item
-          label="用户ID"
-          name="_id"
-         
-        >
+        <Form.Item label="User ID" name="_id">
           <Input placeholder={_id} disabled />
         </Form.Item>
       )}
 
       <Form.Item
-        label="密码"
+        label="Password"
         name="password"
         rules={[
           {
@@ -97,7 +91,7 @@ export default function UserForm(props) {
         <Input.Password />
       </Form.Item>
       <Form.Item
-        label="手机号"
+        label="Phone Number"
         name="phone"
         rules={[
           {
@@ -109,7 +103,7 @@ export default function UserForm(props) {
         <Input />
       </Form.Item>
       <Form.Item
-        label="邮箱"
+        label="Email"
         name="email"
         rules={[
           {
@@ -123,7 +117,7 @@ export default function UserForm(props) {
 
       <Form.Item
         name="role_id"
-        label="角色ID"
+        label="Role ID"
         rules={[
           {
             required: true,
@@ -131,10 +125,10 @@ export default function UserForm(props) {
         ]}
       >
         <Select
-          placeholder="Select a option and change input text above"
+          placeholder="Select an option and change the input text above"
           allowClear
         >
-          {/* Option values from role.id   display role name from role.name  use ...map  */}
+          {/* Option values from role.id, display role name from role.name using map */}
           {roles.map((role) => (
             <Option key={role._id} value={role._id}>
               {role.name}
@@ -144,9 +138,9 @@ export default function UserForm(props) {
       </Form.Item>
 
       <Button type="primary" htmlType="submit">
-        提交
+        Submit
       </Button>
-      <Button onClick={() => handleCancel()}>取消</Button>
+      <Button onClick={() => handleCancel()}>Cancel</Button>
     </Form>
   );
 }

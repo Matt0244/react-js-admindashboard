@@ -5,18 +5,18 @@ import { useLocation, useHistory } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 
 export default function Home() {
-  const [products, setProducts] = useState([]); // 商品的数组
-  const [total, setTotal] = useState(0); // 商品的总数量
-  const [pageNum, setPageNum] = useState(1); // 显示第几页的数据
-  const [pageSize, setPageSize] = useState(3); // 每页显示几条数据
-  const [searchType, setSearchType] = useState("productName"); // 根据哪个字段搜索
-  const [searchName, setSearchName] = useState(""); // 搜索的关键字
-  const [isLoading, setIsLoading] = useState(false); // 是否正在加载中
-  const [parentId, setParentId] = useState("0"); // 父分类的ID
+  const [products, setProducts] = useState([]); // Array of products
+  const [total, setTotal] = useState(0); // Total number of products
+  const [pageNum, setPageNum] = useState(1); // The page number to display
+  const [pageSize, setPageSize] = useState(3); // Number of items per page
+  const [searchType, setSearchType] = useState("productName"); // Search by field
+  const [searchName, setSearchName] = useState(""); // Search keyword
+  const [isLoading, setIsLoading] = useState(false); // Whether it's loading
+  const [parentId, setParentId] = useState("0"); // Parent category ID
 
   const history = useHistory();
 
-  // 获取商品分页列表的请求
+  // Request to get paginated product list
   const getProducts = async (pageNum) => {
     setIsLoading(true);
     let result = await reqProducts(pageNum, pageSize);
@@ -30,7 +30,8 @@ export default function Home() {
       message.error(msg);
     }
   };
-  // 更新商品状态的请求
+
+  // Request to update product status
   const updateStates = async (productId, status) => {
     console.log(status)
     let result = await reqUpdateStatus(productId, status);
@@ -38,7 +39,7 @@ export default function Home() {
     const { status: status2,  msg } = result;
     console.log(status)
     if (status2 === 0) {
-      message.success("更新成功");
+      message.success("Update successful");
       getProducts(pageNum);
       // setProducts(data.list);
     } else {
@@ -46,7 +47,7 @@ export default function Home() {
     }
   };
 
-  // 搜索商品分页列表的请求
+  // Request to search paginated product list
   const getSearchProducts = async (
     pageNum,
     pageSize,
@@ -63,7 +64,6 @@ export default function Home() {
     setIsLoading(false);
     const { status, data, msg } = result;
 
- 
     if (status === 0) {
       setProducts(data.list);
       setTotal(data.total);
@@ -73,23 +73,23 @@ export default function Home() {
     }
   };
 
-  // useEffect 更新商品状态
+  // useEffect to update product status
   useEffect(() => {
     getProducts(pageNum);
   }, [pageNum]);
 
   const Option = Select.Option;
 
-  // 自己写得  下面是ai 加工的
+  // Self-written part, below is AI-processed
   //   const title = (
   //     <span>
   //       <Select value={{productName}}   style={{ width: 150 }}>
-  //         <Option value="productName">按名称搜索</Option>
-  //         <Option value="productDesc">按描述搜索</Option>
+  //         <Option value="productName">Search by Name</Option>
+  //         <Option value="productDesc">Search by Description</Option>
   //       </Select>
-  //       <Input placeholder="关键字" style={{ width: 150, margin: "0 15px" }} />
+  //       <Input placeholder="Keyword" style={{ width: 150, margin: "0 15px" }} />
   //       <Button type="primary" onClick={() => this.getProducts(1)}>
-  //         搜索
+  //         Search
   //       </Button>
   //     </span>
   //   );
@@ -100,22 +100,22 @@ export default function Home() {
         onChange={(value) => setSearchType(value)}
         style={{ width: 150 }}
       >
-        <Option value="productName">按名称搜索</Option>
-        <Option value="productDesc">按描述搜索</Option>
+        <Option value="productName">Search by Name</Option>
+        <Option value="productDesc">Search by Description</Option>
       </Select>
       <Input
-        placeholder="关键字"
+        placeholder="Keyword"
         style={{ width: 150, margin: "0 15px" }}
         onChange={(e) => setSearchName(e.target.value)}
       />
-      {/* reqSearchProducts onClickfunction */}
+      {/* reqSearchProducts onClick function */}
       <Button
         type="primary"
         onClick={() =>
           getSearchProducts(pageNum, pageSize, searchName, searchType)
         }
       >
-        搜索
+        Search
       </Button>
     </span>
   );
@@ -123,28 +123,28 @@ export default function Home() {
   const extra = (
     <Button type="primary" onClick={() => history.push("/product/addupdate")}>
       <PlusOutlined />
-      添加商品
+      Add Product
     </Button>
   );
 
   const columns = [
     {
-      title: "商品名称",
+      title: "Product Name",
       dataIndex: "name",
       key: "_id",
     },
     {
-      title: "商品描述",
+      title: "Product Description",
       dataIndex: "desc",
     },
     {
-      title: "价格",
+      title: "Price",
       dataIndex: "price",
       render: (price) => "¥" + price,
     },
 
     {
-      title: "状态",
+      title: "Status",
       width: 100,
       render: (product) => {
         const { status, _id, name } = product;
@@ -152,16 +152,16 @@ export default function Home() {
         return (
           <span>
             <Button type="primary" onClick={() => updateStates(_id, newStatus)}>
-              {status === 1 ? "下架" : "上架"}
+              {status === 1 ? "Deactivate" : "Activate"}
             </Button>
-            <span>{status === 1 ? "在售" : "已下架"}</span>
+            <span>{status === 1 ? "On Sale" : "Deactivated"}</span>
           </span>
         );
       },
     },
 
     {
-      title: "操作",
+      title: "Actions",
       width: 50,
 
       // key: "price",
@@ -175,11 +175,11 @@ export default function Home() {
                 history.push("/product/detail", { record });
               }}
             >
-              详情
+              Details
             </Button>
             <Button type="link"onClick={()=>{
               history.push("/product/addupdate",{record})
-            }} >修改</Button>
+            }} >Edit</Button>
           </span>
         );
       },

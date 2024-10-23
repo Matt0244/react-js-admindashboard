@@ -1,113 +1,109 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 
-//引入蚂蚁金服的布局组件
-import {  Input, Button, Table, Modal, message, Tree } from "antd";
-//引入api 接口查询数据
+// Import Ant Design layout components
+import { Input, Button, Table, Modal, message, Tree } from "antd";
+// Import API to query data
 import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 
-//引入muneConfig
+// Import menuConfig
 import menuList from "../../menuConfig";
 
-// 引入登录名称
+// Import login name
 // import memoryUtils from "../../utils/memoryUtils";
 
-//引入时间格式转换
+// Import timestamp to date conversion utility
 import timestampToYMD from "../../utils/timestampToYMD";
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {receiveUser} from '../../redux/actions';
 import storageUtils from '../../utils/storageUtils';
 
 function Role(props) {
 
-  const {user, receiveUser} = props
+  const {user, receiveUser} = props;
 
-  //获取history
+  // Get history
   const history = useHistory();
 
-  //定义表格的选中项
+  // Define selected items in the table
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
 
-  //定义表格的数据
+  // Define data for the table
   const [dataSource, setDataSource] = React.useState([]);
 
-  // 定义role的数据
-
+  // Define role data
   const [role, setRole] = React.useState({});
 
-  //定义input框的值
+  // Define value for the input field
   const [inputValue, setInputValue] = React.useState("");
 
-  //  //定义模态框的显示与隐藏
+  // Define the visibility of the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 定义onCheck的数据
+  // Define checked keys in the tree
   const [checkedKeys, setCheckedKeys] = useState([]);
 
   const handleOk = () => {
-    //输出input框的值
+    // Log the value from the input field
     console.log(inputValue);
-    //发送api请求 添加角色
+    // Send API request to add a role
     addRole();
-    //清空input框的值
+    // Clear the input field
     setInputValue("");
 
     setIsModalOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
-    //清空input框的值
+    // Clear the input field
     setInputValue("");
   };
 
-  //发送api请求 获取角色列表
+  // Send API request to get the role list
   const getRoles = async () => {
     const result = await reqRoles();
     if (result.status === 0) {
-   
-      //设置表格数据
-
+      // Set table data
       setDataSource(result.data);
 
-      message.success("获取角色列表成功");
+      // message.success("Successfully fetched role list");
     } else {
-      message.error("获取角色列表失败");
+      message.error("Failed to fetch role list");
     }
   };
 
-  // //发送api请求 添加角色
+  // Send API request to add a role
   const addRole = async () => {
     const result = await reqAddRole(inputValue);
     if (result.status === 0) {
-      message.success("添加角色成功");
+      message.success("Role added successfully");
     } else {
-      message.error("添加角色失败");
+      message.error("Failed to add role");
     }
   };
 
-  //发送api请求 更新角色
-
+  // Send API request to update a role
   const updateRole = async () => {
     const result = await reqUpdateRole(role);
     console.log(
-      "(role._id, checkedKeys,username)" + role._id,
+      "(role._id, checkedKeys, username)" + role._id,
       checkedKeys,
       username
     );
 
     if (result.status === 0) {
-      message.success("更新角色成功");
+      message.success("Role updated successfully");
     } else {
-      message.error("更新角色失败");
+      message.error("Failed to update role");
     }
   };
 
-  // useEffect 检测数据变化 如果添加或更新角色成功 则重新获取角色列表
+  // useEffect to monitor data changes, re-fetch role list if role is added or updated successfully
   React.useEffect(() => {
     getRoles();
   }, [inputValue, role._id, checkedKeys]);
 
-  //不需要收集点击行信息
+  // No need to collect information from clicked rows
   // const onSelect = (selectedKeys, info) => {
   //   console.log("selectedKeys!!!", selectedKeys, info);
   // };
@@ -116,60 +112,59 @@ function Role(props) {
     setCheckedKeys(checkedKeys);
     console.log("onCheck2", checkedKeys, info);
 
-    //赋值munes
+    // Assign menus
     role.menus = checkedKeys;
 
     console.log("role", role.menus);
     console.log("role", role.name);
   };
 
-  //获取当前用户
-
+  // Get the current user
   const username = user.username;
 
   return (
     <div>
-      {/* 按钮为添加角色  点击后使用antd modal 发送reqAddRole api请求添加角色*/}
-
+      {/* Button to add a role, triggers Ant Design modal and sends reqAddRole API request to add a role */}
       <Button
         type="primary"
+        style={{ margin: '10px' }}
         onClick={() => {
           setIsModalOpen(true);
         }}
       >
-        创建角色
+        Create Role
       </Button>
 
       <Modal
-        title="请输入添加角色名字"
+        title="Please enter the name of the role to add"
         visible={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
       >
         <Input
-          placeholder="请输入角色名字"
+          placeholder="Enter role name"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
       </Modal>
 
-      {/* 按钮为设置角色权限 disabled={!role._id} */}
+      {/* Button to set role permissions, disabled={!role._id} */}
       <Button
         type="primary"
         disabled={!role._id}
         onClick={() => {
-          console.log("点击按钮的role", role);
+          console.log("Role when button clicked", role);
           Modal.confirm({
-            title: "角色名字: " + role.name,
+            title: "Role Name: " + role.name,
             content:
-              //显示角色名字
-              ((<div>角色名字: {role.name}</div>),
+              // Display role name
+              ((<div>Role Name: {role.name}</div>),
               (
                 <Tree
                   treeData={menuList}
                   checkable
-                  // 根据role.menus 设置默认选中项
+                  // Set default checked keys based on role.menus
                   defaultCheckedKeys={role.menus}
                   defaultExpandAll={true}
                   // onSelect={onSelect}
@@ -180,57 +175,54 @@ function Role(props) {
             onOk() {
               role.auth_name = username;
 
-              //发送api请求 更新角色
+              // Send API request to update role
               updateRole(role);
               console.log("role", role);
               
-              //清空localStorage 防止更新权限后菜单没有更新.
-               storageUtils.removeUser()
+              // Clear localStorage to prevent the menu from not updating after permission changes
+              storageUtils.removeUser();
 
               receiveUser({});
-               //退出页面 replace login
-               history.replace("/login");
-             
-
+              // Exit the page, replace with login
+              history.replace("/login");
             },
             onCancel() {
-              //清空数据
+              // Clear data
               setCheckedKeys([]);
             },
           });
         }}
       >
-        设置角色权限
+        Set Role Permissions
       </Button>
 
-      {/* 表单 含有 radio 单选 角色名称 创建时间 授权时间 授权人  */}
+      {/* Table containing radio buttons, role name, creation time, authorization time, authorizer */}
       <Table
-        //表格数据
+        // Table data
         dataSource={dataSource}
-        //表格列名
+        // Table columns
         rowSelection={{
           type: "radio",
-          // selectedRowKeys: [selectedRowKeys],
           selectedRowKeys: [selectedRowKeys],
-          //监听选中项的变化
+          // Monitor changes in the selected items
           onChange: (selectedRowKeys, selectedRows) => {
             setSelectedRowKeys(selectedRows[0]._id);
-             setRole(selectedRows[0])
+             setRole(selectedRows[0]);
           },
         }}
         bordered
-        //监听行的点击事件
+        // Monitor row click events
         onRow={(role) => {
           return {
             onClick: () => {
-              // 点击行
+              // Row clicked
               console.log(role);
               let str = role._id;
               str = str.toString();
 
               setSelectedRowKeys(str);
 
-              //跟踪role的数据
+              // Track role data
               setRole(role);
               console.log("role", role);
             },
@@ -239,24 +231,20 @@ function Role(props) {
         rowKey="_id"
         pagination={{ defaultPageSize: 3, showQuickJumper: true }}
       >
-        <Table.Column title="角色名字" dataIndex="name" key="name" />
+        <Table.Column title="Role Name" dataIndex="name" key="name" />
         <Table.Column
-          title="创建时间"
-          render={(role) => role.create_time ? timestampToYMD(role.create_time):""}
+          title="Creation Time"
+          render={(role) => role.create_time ? timestampToYMD(role.create_time) : ""}
           key="create_time"
         />
       
-        {/*  table.column  render  中使用 timestampToYMD 处理 auth_time 没有值 显示为字符文"unanthed"*/}
+        {/* In table.column, render using timestampToYMD to handle auth_time. If no value, display as "unauthed" */}
+        <Table.Column title="Authorization Time" render={(role) => role.auth_time ? timestampToYMD(role.auth_time) : "unauthed"} key="auth_time" />
 
-        <Table.Column title="授权时间" render={(role) => role.auth_time ? timestampToYMD(role.auth_time):"unauthed"} key="auth_time" />
-
-
-    
-         
-        <Table.Column title="授权人" dataIndex="auth_name" key="auth_name" />
+        <Table.Column title="Authorizer" dataIndex="auth_name" key="auth_name" />
       </Table>
 
-      {/* 模态框 */}
+      {/* Modal */}
     </div>
   );
 }

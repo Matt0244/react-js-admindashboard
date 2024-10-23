@@ -8,10 +8,10 @@ import { reqDeleteImg } from "../../api";
 import RichTextEditor from "./rech-text-editor";
 import { reqAddOrUpdateProduct } from "../../api";
 
-//提取TextArea组件
+// Extract TextArea component
 const { TextArea } = Input;
 
-// 图片转换成base64
+// Convert image to base64
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -21,16 +21,16 @@ const getBase64 = (file) =>
   });
 
 export default function ProdectAddUpdate() {
-  // 创建history
+  // Create history
   const history = useHistory();
 
-  // 图片上载antd的预设
+  // Ant Design preset for image upload
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
 
-  // 创建ref容器 editorRef
+  // Create ref container editorRef
   const editorRef = useRef();
 
   const handleCancel = () => setPreviewOpen(false);
@@ -48,7 +48,7 @@ export default function ProdectAddUpdate() {
     if (file.status === "done") {
       const result = file.response;
       if (result.status === 0) {
-        message.success("图片上传成功");
+        message.success("Photo Updated");
         const { name, url } = result.data;
         file = fileList[fileList.length - 1];
         file.name = name;
@@ -57,16 +57,16 @@ export default function ProdectAddUpdate() {
     } else if (file.status === "removed") {
       const result = await reqDeleteImg(file.name);
       if (result.status === 0) {
-        message.success("图片删除成功");
+        message.success("Photo Deleted");
       } else {
-        message.error("图片删除失败");
+        message.error("Delete Failed");
       }
     }
 
     setFileList(fileList);
   };
 
-  // 获取图片名字
+  // Get image names
   // const imgs = fileList.map((c) => c.name);
   // console.log(imgs);
   const uploadButton = (
@@ -82,16 +82,16 @@ export default function ProdectAddUpdate() {
     </div>
   );
 
-  // 图片上载antd的预设 结束
+  // End of Ant Design preset for image upload
 
   const location = useLocation();
 
-  // 创建setOptons 状态为一个空数组
+  // Create setOptons, state as an empty array
   const [options, setOptions] = useState([]);
 
-  // 创建setPrentId 状态默认为0
+  // Create setPrentId, default state is 0
   const [parentId, setParentId] = useState("0");
-  // 但是，如果你没有在导航时设置location.state，或者没有设置location.state.record，那么location.state或location.state.record可能是undefined。在这种情况下，你需要在访问location.state.record之前，检查location.state是否存在。
+  // However, if you didn’t set location.state when navigating, or didn’t set location.state.record, then location.state or location.state.record might be undefined. In this case, you need to check if location.state exists before accessing location.state.record.
   const [record, setRecord] = useState(
     (location.state && location.state.record) || {
       name: "",
@@ -104,17 +104,17 @@ export default function ProdectAddUpdate() {
 
   const { name, desc, price, imgs, detail } = record;
 
-  console.log("我是record");
+  console.log("This is record");
   console.log(record);
 
-  // 在组件挂载完成后，发送异步请求获取一级分类列表
+  // After the component mounts, send an async request to get the primary category list
   useEffect(() => {
     getCategorys();
     if (imgs && imgs.length > 0) {
       let newImgs = imgs.map((img, index) => ({
-        uid: -index, // 每个file都有自己唯一的id
-        name: img, // 图片文件名
-        status: "done", // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
+        uid: -index, // Each file has its own unique id
+        name: img, // Image file name
+        status: "done", // Image status: done - uploaded, uploading: uploading, removed: deleted
         url: "http://localhost:3000/upload/" + img,
       }));
       setFileList(newImgs);
@@ -127,7 +127,7 @@ export default function ProdectAddUpdate() {
     }
   }, [parentId, imgs, editorRef]);
 
-  // 定义onChange函数，更新detail值
+  // Define onChange function to update the detail value
   const onEditorChange = (newDetail) => {
     setRecord((prevRecord) => ({
       ...prevRecord,
@@ -136,7 +136,7 @@ export default function ProdectAddUpdate() {
   };
 
   const onFinish = (values) => {
-    // 1.收集数据,并封装成product对象
+    // 1. Collect data and package it into a product object
     const { name, desc, price, categoryIds } = values;
     let pCategoryId, categoryId;
     if (categoryIds.length === 1) {
@@ -159,46 +159,39 @@ export default function ProdectAddUpdate() {
     };
     console.log(product);
 
-    // 如果是更新, 需要添加_id
+    // If updating, add _id
     if (record._id) {
       product._id = record._id;
     }
 
-    // 2.调用接口请求函数去添加/更新
-    // reqAddOrUpdateProduct(product).then((response) => {
-    //   if (response.status === 0) {
-    //     message.success(`${record._id ? "更新" : "添加"}商品成功!`);
-    //     history.goBack();
-    //   } else {
-    //     message.error(`${record._id ? "更新" : "添加"}商品失败!`);
-    //   }
-    // });
-    // 2.调用接口请求函数去添加/更新
-        reqAddOrUpdateProduct(product).then((response) => {
-          if (response.status === 0) {
-            message.success(`${record._id ? "更新" : "添加"}商品成功!`);
-            history.goBack();
-          } else {
-            message.error(`${record._id ? "更新" : "添加"}商品失败!`);
-          }
-        }).catch((error) => {
-          console.error(error);
-          message.error('操作失败，发生异常！');
-        });
+    // 2. Call API request function to add/update
+    reqAddOrUpdateProduct(product)
+      .then((response) => {
+        if (response.status === 0) {
+          message.success(`${record._id ? "Update" : "Add"} Product Success!`);
+          history.goBack();
+        } else {
+          message.error(`${record._id ? "Update" : "Add"} Product Failed!`);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        message.error("Operation Failed, An Exception Occurred!");
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
-    // 通过record.detail获取最新的detail值
+    // Get the latest detail value through record.detail
     console.log(record.detail);
 
     console.log("Failed:", errorInfo);
   };
 
-  // 在Ant Design的Form组件中，自定义验证函数需要接收两个参数：rule和value。rule参数包含了你在rules数组中为该字段定义的规则，而value参数是用户输入的值。
+  // In Ant Design's Form component, a custom validation function needs to receive two parameters: rule and value. The rule parameter contains the rules you defined for the field in the rules array, and the value parameter is the user's input.
 
-  // 在你的checkPrice函数中，你并没有使用到rule参数，所以你可以使用占位符_来表示这个参数。这是一种常见的编程惯例，用来表示这个参数在函数体中并未被使用。
+  // In your checkPrice function, you’re not using the rule parameter, so you can use a placeholder _ to represent it. This is a common programming convention used to indicate that the parameter is not being used in the function body.
 
-  // 如果你不使用占位符，你的函数将只接收一个参数，那么这个参数将会是rule，而不是value。这就是为什么你需要在checkPrice函数的参数列表中加入占位符_的原因。
+  // If you don't use a placeholder, your function will only receive one parameter, which will be rule instead of value. This is why you need to include a placeholder _ in the checkPrice function’s parameter list.
   const checkPrice = (_, value) => {
     const numberValue = Number(value);
     if (numberValue > 0) {
@@ -207,12 +200,12 @@ export default function ProdectAddUpdate() {
     return Promise.reject(new Error("Price must be greater than zero!"));
   };
 
-  // 级联选择器
+  // Cascading selector
   const onChange = (value, selectedOptions) => {
     setParentId(value);
   };
 
-  // 选择某个分类项时，加载下一级分类列表的回调函数
+  // When selecting a category item, callback function for loading the next level category list
   // const filter = (inputValue, path) => {
   //   return path.some(
   //     (option) =>
@@ -220,58 +213,57 @@ export default function ProdectAddUpdate() {
   //   );
   // };
 
-  // 这个公式是固定的，你只需要将它复制到你的代码中，然后将reqCategorys替换成你的请求函数即可。 慢慢在学识
-  // 获取一级/二级分类列表
-  // 1.第一步发送prarent =0 获取全部的一级分类, 2.map 来定义 value : c._id, 3. 使用promise.all 来获取二级分类数据.  4.使用forEach 来将二级分类数据添加到对应的一级分类项中
-  // 5.使用setOptions 来更新状态
-  // 这段代码的主要目的是获取一级和二级分类的数据，并将其格式化为Cascader组件所需的格式。
+  // This formula is fixed, you only need to copy it into your code, then replace reqCategorys with your request function. Keep learning slowly.
+  // Get primary/secondary category list
+  // 1. First send prarent = 0 to get all primary categories, 2. use map to define value: c._id, 3. use promise.all to get secondary category data, 4. use forEach to add secondary category data to the corresponding primary category item.
+  // 5. Use setOptions to update the state
+  // The main purpose of this code is to get primary and secondary category data and format it for the Cascader component.
 
-  // getCategorys函数首先通过reqCategorys函数发送一个异步请求，获取指定parentId的分类数据。
+  // The getCategorys function first sends an async request via the reqCategorys function to get the category data for the specified parentId.
 
-  // 如果请求成功（result.status === 0），则将返回的数据保存在categorys变量中。
+  // If the request is successful (result.status === 0), the returned data is stored in the categorys variable.
 
-  // 接下来，根据parentId的值来判断是获取一级分类还是二级分类。
+  // Next, based on the value of parentId, it determines whether to get the primary category or the secondary category.
 
-  // 如果parentId为'0'，则表示获取一级分类。将每个分类项映射为一个对象，包含value（分类的id）、label（分类的名称）和isLeaf（表示是否为叶子节点，即没有子分类）属性。初始时，假设所有一级分类都有子分类，所以isLeaf设为false。
+  // If parentId is '0', it means fetching the primary category. Each category item is mapped into an object containing value (category id), label (category name), and isLeaf (indicating whether it is a leaf node, meaning no subcategories). Initially, it assumes all primary categories have subcategories, so isLeaf is set to false.
 
-  // 然后，对每个一级分类项再次调用getCategorys函数，获取其二级分类数据。使用Promise.all等待所有的异步操作完成。
+  // Then, for each primary category item, the getCategorys function is called again to get its secondary category data. Use Promise.all to wait for all async operations to complete.
 
-  // 当所有的二级分类数据都获取到后，遍历每个二级分类数据。如果某个一级分类没有二级分类（即subC.length === 0），则将其isLeaf属性设为true。否则，将其二级分类数据添加到其children属性中。
+  // Once all secondary category data is obtained, iterate over each secondary category data. If a primary category has no secondary categories (subC.length === 0), set its isLeaf property to true. Otherwise, add the secondary category data to its children property.
 
-  // 最后，使用setOptions更新状态，保存所有的一级分类数据。
+  // Finally, use setOptions to update the state and save all primary category data.
 
-  // 如果parentId不为'0'，则表示获取二级分类。将每个分类项映射为一个对象，包含value、label和isLeaf属性。因为二级分类没有子分类，所以isLeaf设为true。然后返回这个数组。
+  // If parentId is not '0', it means fetching the secondary category. Each category item is mapped into an object containing value, label, and isLeaf properties. Since secondary categories have no subcategories, isLeaf is set to true. Then return this array.
 
-  // 这样，无论何时调用getCategorys函数，都能获取到正确格式的分类数据，可以直接用于Cascader组件。
-
+  // This way, whenever the getCategorys function is called, the correct format of category data can be obtained and directly used for the Cascader component.
   const getCategorys = async (parentId = "0") => {
     const result = await reqCategorys(parentId);
 
     if (result.status === 0) {
       const categorys = result.data;
       if (parentId === "0") {
-        // 如果是一级分类
+        // If it’s a primary category
         const categoryOptions = categorys.map((c) => ({
           value: c._id,
           label: c.name,
-          isLeaf: false, // 先假设所有的一级分类都有子分类
+          isLeaf: false, // Initially assume all primary categories have subcategories
         }));
-        // 获取二级分类数据
+        // Get secondary category data
         const subCategorys = await Promise.all(
           categoryOptions.map((c) => getCategorys(c.value))
         );
-        // 将二级分类数据添加到对应的一级分类项中
+        // Add secondary category data to the corresponding primary category item
         subCategorys.forEach((subC, index) => {
           if (subC.length === 0) {
-            // 如果没有子分类
-            categoryOptions[index].isLeaf = true; // 将 isLeaf 设置为 true
+            // If no subcategory
+            categoryOptions[index].isLeaf = true; // Set isLeaf to true
           } else {
             categoryOptions[index].children = subC;
           }
         });
         setOptions(categoryOptions);
       } else {
-        // 如果是二级分类
+        // If it’s a secondary category
         return categorys.map((c) => ({
           value: c._id,
           label: c.name,
@@ -299,46 +291,46 @@ export default function ProdectAddUpdate() {
         price: price || 0,
         detail: detail || "",
         imgs: imgs || [],
-        // categoryIds 如果有值，说明是更新页面，如果没有值，说明是添加页面
+        // categoryIds If it has a value, it means it's an update page; if not, it's an add page
         categoryIds: record.categoryIds || [],
 
-        // 其他字段的初始值...
+        // Other fields' initial values...
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      {/* 商品名称 行 */}
+      {/* Product Name Row */}
       <Form.Item
-        label="商品名称"
+        label="Product Name"
         name="name"
         rules={[
           {
             required: true,
-            message: "必须填写商品名称!",
+            message: "Product name is required!",
           },
         ]}
       >
         <Input />
       </Form.Item>
 
-      {/* 商品描述 */}
+      {/* Product Description */}
       <Form.Item
-        label="商品描述"
+        label="Product Description"
         name="desc"
         rules={[
           {
             required: true,
-            message: "必须填写商品描述!",
+            message: "Product description is required!",
           },
         ]}
       >
         <TextArea rows={4} />
       </Form.Item>
 
-      {/* 商品价格 */}
+      {/* Product Price */}
       <Form.Item
-        label="商品价格"
+        label="Product Price"
         name="price"
         rules={[
           {
@@ -346,30 +338,30 @@ export default function ProdectAddUpdate() {
           },
         ]}
       >
-        <Input type="number" addonAfter="元" />
+        <Input type="number" addonAfter="¥" />
       </Form.Item>
 
-      {/* 商品分类 */}
+      {/* Product Category */}
       <Form.Item
-        label="商品分类"
+        label="Product Category"
         name="categoryIds"
         rules={[
           {
             required: true,
-            message: "必须选择商品分类!",
+            message: "Product category is required!",
           },
         ]}
       >
         <Cascader
-          placeholder="请选择商品分类"
+          placeholder="Please select a product category"
           options={options}
           onChange={onChange}
           onSearch={(value) => console.log(value)}
         ></Cascader>
       </Form.Item>
 
-      {/* 图片上传 */}
-      <Form.Item label="图片上传" name="imgs">
+      {/* Image Upload */}
+      <Form.Item label="Image Upload" name="imgs">
         <Upload
           action="/manage/img/upload"
           accept="image/*"
@@ -397,23 +389,23 @@ export default function ProdectAddUpdate() {
         </Modal>
       </Form.Item>
 
-      {/* 商品html文本 */}
+      {/* Product HTML Text */}
       <Form.Item
-        label="商品详情"
+        label="Product Details"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 24 }}
-        // 提交表单时，会将富文本编辑器中的内容转换为html格式的文本，然后提交给后台
+        // When submitting the form, the content in the rich text editor will be converted into HTML text and then submitted to the backend
         name="detail"
-        // 必须填写
+        // Required
         rules={[
           {
             required: true,
-            message: "必须填写商品详情!",
+            message: "Product details are required!",
           },
         ]}
       >
-        {/* <RichTextEditor  ref={editorRef} /> */}
-        {/* // 引入富文本编辑器 和加上ref={editorRef} 用来获取富文本编辑器中的内容  但是这样会报错 */}
+        {/* <RichTextEditor ref={editorRef} /> */}
+        {/* // Introducing the rich text editor and adding ref={editorRef} to get the content in the rich text editor. However, this will cause an error */}
         <RichTextEditor
           ref={editorRef}
           detail={detail}
@@ -421,7 +413,7 @@ export default function ProdectAddUpdate() {
         />
       </Form.Item>
 
-      {/* 提交按钮 */}
+      {/* Submit Button */}
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit

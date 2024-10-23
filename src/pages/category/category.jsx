@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Space, Button, Table, message, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "./index.css";
-import { reqCategorys,  reqUpdateCategory ,reqAddCategory} from "../../api";
+import { reqCategorys, reqUpdateCategory, reqAddCategory } from "../../api";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 /**
@@ -18,16 +18,14 @@ export default function Categorys() {
   // set state data
 
   const [categorys, setCategorys] = useState([]);
-  // set isloading state false
+  // set isLoading state false
   const [isLoading, setIsLoading] = useState(false);
-  // set parentid state
+  // set parentId state
   const [parentId, setParentId] = useState("0");
   // set subCategorys state
   const [subCategorys, setSubCategorys] = useState([]);
 
-
-
-  // 在组件外部创建一个Form实例
+  // Create a Form instance outside the component
   const [form] = Form.useForm();
 
   /**
@@ -47,7 +45,6 @@ export default function Categorys() {
    * @param {string} okText - The text of the ok button.
    * @param {string} placeholder - The placeholder of the input field.
    * @param {Array} rules - The validation rules for the input field.
-   * 
    */
 
   const getCategorys = async () => {
@@ -67,108 +64,97 @@ export default function Categorys() {
     }
   };
 
-
-
-  const handleCategory = (title, okText, placeholder, rules,categoryId,) => {
+  const handleCategory = (title, okText, placeholder, rules, categoryId) => {
     modal.confirm({
-      categoryId:categoryId,
+      categoryId: categoryId,
       title: title,
       okText: okText,
-      cancelText: "取消",
-      
+      cancelText: "Cancel",
       icon: <ExclamationCircleOutlined />,
       content: (
-        <Form form={form} > 
+        <Form form={form}>
           <Form.Item name="categoryName" rules={rules}>
             <Input placeholder={placeholder} />
           </Form.Item>
-          
         </Form>
       ),
-  
 
       onOk: async () => {
-        try{
-           // handle ok callback here
+        try {
+          // handle ok callback here
 
-        const values = form.getFieldsValue(); // 获取values整个表单的值
-        // const categoryName = JSON.parse(JSON.stringify(values.categoryName)); // 获取单个表单的值
-        const categoryName = values.categoryName;
-        console.log("Form values:", values.categoryName); // 打印整个表单的值
-        console.log(categoryName); // 打印id
-  
-        // 调用 reqUpdateCategory 方法并处理返回值
-        let result;
-        if (title === '添加分类') {
-          // 调用 addUpdateCategory 方法并处理返回值
-          result = await reqAddCategory(categoryName,  parentId );
-        } else {
-          // 调用 reqUpdateCategory 方法并处理返回值
-          result = await reqUpdateCategory({categoryId, categoryName: values.categoryName});
-        }
-        console.log(result);
-    
-        if (result.status === 0) {
-          message.success(title === '添加分类' ? '添加分类成功' : '更新分类成功');
-          getCategorys(); // 更新成功后重新获取分类列表
-        } else {
-          message.error(result.msg || (title === '添加分类' ? '添加分类失败' : '更新分类失败'));
-        }
-        form.resetFields();
+          const values = form.getFieldsValue(); // Get the entire form values
+          const categoryName = values.categoryName;
+          console.log("Form values:", values.categoryName); // Print the entire form values
+          console.log(categoryName); // Print id
 
+          // Call reqUpdateCategory method and handle the return value
+          let result;
+          if (title === "Add Category") {
+            // Call addUpdateCategory method and handle the return value
+            result = await reqAddCategory(categoryName, parentId);
+          } else {
+            // Call reqUpdateCategory method and handle the return value
+            result = await reqUpdateCategory({
+              categoryId,
+              categoryName: values.categoryName,
+            });
+          }
+          console.log(result);
+
+          if (result.status === 0) {
+            message.success(
+              title === "Add Category" ? "Category added successfully" : "Category updated successfully"
+            );
+            getCategorys(); // Re-fetch the category list after successful update
+          } else {
+            message.error(
+              result.msg || (title === "Add Category" ? "Failed to add category" : "Failed to update category")
+            );
+          }
+          form.resetFields();
         } catch (error) {
-          // 如果表单验证失败，error会包含验证错误信息
-          console.log('如果表单验证失败，error会包含验证错误信息Form validation failed:', error);
+          // If form validation fails, error will contain validation error information
+          console.log("Form validation failed:", error);
         }
-        
-       
       },
-   
-    
+
       onCancel: () => {
         // handle cancel callback here
         console.log("Cancel clicked");
-        form.resetFields(); // 重置表单
-        
+        form.resetFields(); // Reset form
       },
     });
   };
 
- 
-
   // useEffect hook to fetch category data from server
   useEffect(() => {
-   
     getCategorys();
   }, [parentId]);
 
   // set title and extra button for card component
   const title =
     parentId === "0" ? (
-      "一级分类列表"
+      "Primary Category List"
     ) : (
       <span>
         <Button type="link" onClick={() => setParentId("0")}>
-          一级分类列表
+          Primary Category List
         </Button>
         <span> / </span>
-        <span>
-          {categorys.find((category) => category._id === parentId)?.name}
-        </span>
+        <span>{categorys.find((category) => category._id === parentId)?.name}</span>
         <Button
-        type="primary"
-        
-        onClick={() =>
-          handleCategory("添加二级分类", "确认", "请输入分类名称", [
-            { required: true, message: "添加二级分类名称必须输入" }, 
-          ])
-          
-        }
-        style={{marginLeft:"50px" }}
-      >
-        <PlusOutlined />
-        添加二级分类
-      </Button>
+          type="primary"
+          onClick={() =>
+            handleCategory("Add Subcategory", "Confirm", "Please enter category name", [
+              { required: true, message: "Subcategory name is required" },
+            ])
+          }
+          style={{ marginLeft: "50px" }}
+        >
+          <PlusOutlined />
+          Add Subcategory
+        </Button>
       </span>
     );
   const extra =
@@ -176,51 +162,44 @@ export default function Categorys() {
       <Button
         type="primary"
         onClick={() =>
-          handleCategory("添加分类", "确认", "请输入分类名称", [
-            { required: true, message: "添加分类名称必须输入" }, 
+          handleCategory("Add Category", "Confirm", "Please enter category name", [
+            { required: true, message: "Category name is required" },
           ])
         }
       >
         <PlusOutlined />
-        添加
+        Add
       </Button>
     ) : null;
-
 
   // set dataSource and columns for Table component
   const dataSource = parentId === "0" ? categorys : subCategorys;
   const columns = [
     {
-      title: "分类名称",
+      title: "Category Name",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "操作",
+      title: "Actions",
       align: "center",
       width: "40%",
       render: (record) => {
         return (
           <span>
-            
-            
             <Button
               type="link"
               onClick={() =>
-                handleCategory("更改分类", "确认", record.name, [
-                  { required: true, message: "更改分类名称必须输入" },
-                ],record._id)
-                
+                handleCategory("Update Category", "Confirm", record.name, [
+                  { required: true, message: "Category name is required" },
+                ], record._id)
               }
             >
-              修改分类
+              Update Category
             </Button>
             {parentId === "0" ? (
-              <Button
-                type="link"
-                onClick={() => handleViewSubCategorys(record)}
-              >
-                查看子分类
+              <Button type="link" onClick={() => handleViewSubCategorys(record)}>
+                View Subcategories
               </Button>
             ) : null}
           </span>

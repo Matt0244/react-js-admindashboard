@@ -13,7 +13,6 @@ import Role from "../role/role";
 import User from "../user/user";
 import Line from "../line/line";
 import Pie from "../pie/pie";
-import MyTest from "../test/my-test";
 
 export default function Admin() {
   const user = memoryUtils.user;
@@ -33,24 +32,17 @@ export default function Admin() {
     lineHeight: "80px",
     backgroundColor: "#7dbcea",
   };
-  const contentStyle = {
-    textAlign: "center",
-    minHeight: 120,
-    lineHeight: "120px",
-    color: "#fff",
-    backgroundColor: "#108ee9",
-    overflow: "auto",
-  };
+
   const siderStyle = {
     textAlign: "center",
     lineHeight: "120px",
     color: "#fff",
-    backgroundColor: '#3ba0e9',
+    backgroundColor: '#284B63',
   };
   const footerStyle = {
     textAlign: "center",
     color: "#fff",
-    backgroundColor: "#7dbcea",
+    backgroundColor: "#284B63",
   };
 
   return (
@@ -69,7 +61,6 @@ export default function Admin() {
           <Header style={headerStyle}>
             <MyHeader />
           </Header>
-          {/* <Content style={contentStyle} > */}
           <Content  >
             <Switch>
               <Route path="/home" component={Home} />
@@ -80,7 +71,7 @@ export default function Admin() {
               <Route path="/charts/bar" component={Bar} />
               <Route path="/charts/line" component={Line} />
               <Route path="/charts/pie" component={Pie} />
-              <Route path="/mytest" component={MyTest} />
+
               <Redirect to="/home" />
             </Switch>
           </Content>

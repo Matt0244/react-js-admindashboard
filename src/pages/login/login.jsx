@@ -33,7 +33,7 @@ function Login(props) {
     try {
       const response = await axios.post("/login", values);
       if (response.data.status === 0) {
-        message.success("登录成功");
+        message.success("Login Successful");
         const user = response.data.data;
         props.receiveUser(user);
         storageUtils.saveUser(user);
@@ -44,7 +44,7 @@ function Login(props) {
     } catch (error) {
       notification.error({
         message: "Error",
-        description: "发送失败",
+        description: "Error",
       });
     }
   };
@@ -58,11 +58,11 @@ function Login(props) {
     <div className="login">
       <header className="login-header">
         <img src={logo} alt="logo" />
-        <h1>React后台项目:后台管理系统</h1>
+        <h1>React JS:Admin Dashboard</h1>
       </header>
 
       <section className="login-content">
-        <h2>用户登录</h2>
+        <h2>Login </h2>
         <Form
           name="basic"
           labelCol={{
@@ -96,7 +96,7 @@ function Login(props) {
               },
               {
                 pattern: /^[a-zA-Z0-9_]*$/,
-                message: "密码必须是英文、数组或下划线组成",
+                message: "assword must consist of letters, numbers, or underscores",
               },
             ]}
           >
@@ -121,7 +121,7 @@ function Login(props) {
               },
               {
                 pattern: /^[a-zA-Z0-9_]*$/,
-                message: "密码必须是英文、数组或下划线组成",
+                message: "assword must consist of letters, numbers, or underscores",
               },
             ]}
           >
@@ -135,7 +135,7 @@ function Login(props) {
             }}
           >
             <Button type="primary" htmlType="submit">
-              登录
+              Login
             </Button>
           </Form.Item>
         </Form>
