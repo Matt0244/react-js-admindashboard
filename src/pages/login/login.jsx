@@ -73,6 +73,8 @@ function Login(props) {
           }}
           initialValues={{
             remember: true,
+            username: "admin",   
+            password: "admin",  
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}

@@ -10,7 +10,8 @@ import { message } from "antd";
 //这个是简写 箭头函数不带大括号{}就是要return的意思 这里return ajax 就是promise
 // export const reqLogin = (username,password) =>{return ajax ('/login',{username,password}.'POST')}
 
-const BASE = "http://localhost:3000";
+const BASE = "http://localhost:3000/api";
+// const BASE = "http://localhost:3000";
 
 export const reqLogin = (username, password) =>
   ajax("/login", { username, password }, "POST");
