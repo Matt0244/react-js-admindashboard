@@ -9,7 +9,7 @@ import {
   notification,
 } from "antd";
 import './login.css'; // 确保路径正确
-//import {reqLogin}from '../../api'
+import {reqLogin}from '../../api'
 import { useHistory } from "react-router-dom";
 // import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
@@ -31,15 +31,16 @@ function Login(props) {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post("/login", values);
-      if (response.data.status === 0) {
+      
+      const response = await reqLogin(values.username,values.password); // 
+      if (response.status === 0) {
         message.success("Login Successful");
-        const user = response.data.data;
+        const user = response.data; 
         props.receiveUser(user);
         storageUtils.saveUser(user);
-        history.replace("/");
+        history.replace("/"); // 
       } else {
-        message.error(response.data.msg);
+        message.error(response.msg);
       }
     } catch (error) {
       notification.error({
