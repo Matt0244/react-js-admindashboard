@@ -74,7 +74,7 @@ export const reqPollution = () => {
 //   |parentId    |Y       |string   |父级分类的ID
 
 export const reqCategorys = (parentId) =>
-  ajax(BASE + "/manage/category/list", { parentId });
+  ajax(`${window.location.origin}/api/manage/category/list`, { parentId });
 
 // 添加分类
 export const reqAddCategory = (categoryName, parentId) =>
@@ -86,7 +86,7 @@ export const reqUpdateCategory = ({ categoryId, categoryName }) =>
 
 // 获取一个分类
 export const reqCategory = (categoryId) =>
-  ajax(BASE + "/manage/category/info", { categoryId });
+  ajax(`${window.location.origin}/api/manage/category/info`, { categoryId });
 
 // 获取商品分页列表
 export const reqProducts = (pageNum, pageSize) =>
@@ -124,12 +124,13 @@ export const reqSearchProducts = ({
 
 // 删除指定名称的图片
 export const reqDeleteImg = (name) =>
-  ajax(BASE + "/manage/img/delete", { name }, "POST");
+  ajax(`${window.location.origin}/api//manage/img/delete`, { name }, "POST");
+
 
 // 添加/修改商品
 export const reqAddOrUpdateProduct = (product) =>
   ajax(
-    BASE + "/manage/product/" + (product._id ? "update" : "add"),
+    `${window.location.origin}/api/manage/product/` + (product._id ? "update" : "add"),
     product,
     "POST"
   );
