@@ -18,7 +18,7 @@ export default function UserForm(props) {
 
       console.log("success");
 
-      props.colesModal(); // Close modal
+      props.closeModal(); // Close modal
       getUsers();
     } else {
       console.log("fail");
@@ -37,7 +37,7 @@ export default function UserForm(props) {
 
   const handleCancel = () => {
     form.resetFields();
-    props.colesModal();
+    props.closeModal();
     getUsers();
   };
 
@@ -78,7 +78,7 @@ export default function UserForm(props) {
         </Form.Item>
       )}
 
-      <Form.Item
+     {!_id&& <Form.Item
         label="Password"
         name="password"
         rules={[
@@ -89,7 +89,8 @@ export default function UserForm(props) {
         ]}
       >
         <Input.Password />
-      </Form.Item>
+      </Form.Item>}
+
       <Form.Item
         label="Phone Number"
         name="phone"

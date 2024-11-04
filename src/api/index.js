@@ -10,7 +10,7 @@ import { message } from "antd";
 //这个是简写 箭头函数不带大括号{}就是要return的意思 这里return ajax 就是promise
 // export const reqLogin = (username,password) =>{return ajax ('/login',{username,password}.'POST')}
 
-const BASE = "/api";//这个nginx后部署的发送端口8888 +api可以让容易express捕捉到请求 然不是刷新网站
+const BASE = "api";//这个nginx后部署的发送端口8888 +api可以让容易express捕捉到请求 然不是刷新网站
 // const BASE = "http://localhost:3000";
 
 export const reqLogin = (username, password) =>

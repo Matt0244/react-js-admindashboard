@@ -140,7 +140,7 @@ export default function Home() {
     {
       title: "Price",
       dataIndex: "price",
-      render: (price) => "¥" + price,
+      render: (price) => "$" + price,
     },
 
     {

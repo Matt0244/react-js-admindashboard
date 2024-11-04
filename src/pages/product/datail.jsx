@@ -9,8 +9,6 @@ import { ArrowLeftOutlined, RightCircleFilled } from "@ant-design/icons";
 // The categories are not fully implemented. Category 2 is not displayed, Category 1 is displayed.
 const Item = List.Item;
 
-const BASE_IMG_URL = "http://localhost:3000/upload/";
-
 export default function ProductDetail() {
   const location = useLocation();
   const history = useHistory();
@@ -82,7 +80,7 @@ export default function ProductDetail() {
         </Item>
         <Item>
           <span className="left">Product Price:</span>
-          <span>{price}元</span>
+          <span>${price}</span>
         </Item>
         <Item>
           <span className="left">Product Category:</span>
@@ -101,7 +99,7 @@ export default function ProductDetail() {
             {imgs.map((img) => (
               <img
                 key={img}
-                src={BASE_IMG_URL + img}
+                src={`/upload/` + img}
                 className="product-img"
                 alt="img"
               />
