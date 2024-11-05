@@ -169,7 +169,9 @@ export default function ProdectAddUpdate() {
         uid: -index,
         name: img,
         status: "done",
-        url: "/upload/" + img,
+        url: `http://localhost:5000/upload/` + img,
+        
+        
       }));
       setFileList(newImgs);
     }

@@ -99,7 +99,8 @@ export default function ProductDetail() {
             {imgs.map((img) => (
               <img
                 key={img}
-                src={`/upload/` + img}
+                // src={`/upload/` + img}
+                src={`http://localhost:5000/upload/` + img}
                 className="product-img"
                 alt="img"
               />
